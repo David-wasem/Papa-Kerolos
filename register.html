@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="logo.jpg" type="image/jpg">
+    <link rel="stylesheet" href="index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&family=Noto+Kufi+Arabic:wght@100..900&display=swap"
+        rel="stylesheet">
+    <title>Papa Kerolos</title>
+</head>
+
+<body>
+    <nav>
+        <button class="hamburger">☰</button>
+        <div class="logo">
+            <img src="logo.jpg" alt="Papa Kerolos Logo" class="logo-img">
+        </div>
+
+        <div class="nav-links desktop-nav">
+            <div class="link-div"><a href="index.html">الصفحة الرئيسية</a></div>
+            <div class="link-div"><a href="register.html">التسجيل</a></div>
+            <div class="link-div"><a href="#">الترتيب</a></div>
+        </div>
+    </nav>
+    <div class="drawer">
+        <div class="nav-links mobile-nav">
+            <div class="link-div"><a href="index.html">الصفحة الرئيسية</a></div>
+            <div class="link-div"><a href="register.html">التسجيل</a></div>
+            <div class="link-div"><a href="#">الترتيب</a></div>
+            <div class="win-logo"><a href="#"><img src="logo.jpg" alt="Papa Kerolos Logo" class="win-logo-mobile"></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="intro">
+        <h1>اهلا بيكم يا خدام وخادمات المستقبل</h1>
+        <h2>في اجتماع البابا كيرلس عمود الدين</h2>
+    </div>
+
+    <!-- Login / QR scanner section -->
+    <div id="login-section" class="login-section">
+        <h2>التسجيل</h2>
+        <input id="user-id" type="text" placeholder="دخل الكود بتاعك" aria-label="دخل الكود بتاعك">
+        <button id="enter-btn">Enter</button>
+        <div id="loading" class="loading hidden" aria-hidden="true" title="loading"></div>
+
+        <button id="scan-btn" class="hidden">Scan QR</button>
+
+        <div id="scanner" class="scanner hidden" aria-hidden="true">
+            <video id="video" autoplay playsinline muted></video>
+            <canvas id="canvas" hidden></canvas>
+            <div id="scan-result" class="scan-result" aria-live="polite"></div>
+            <button id="stop-scan" class="hidden">Stop</button>
+        </div>
+    </div>
+
+    <!-- Success/Error Message Box -->
+    <div id="message-box" class="message-box hidden">
+        <div class="message-content">
+            <div id="message-icon" class="message-icon"></div>
+            <div id="message-text" class="message-text"></div>
+            <button id="message-close" class="message-close">OK</button>
+        </div>
+    </div>
+
+    <footer>
+        <img src="logo.jpg" alt="papa kerolous logo" class="papa-footer">
+        <div class="rights">© PAPA KEROLOS 2025 💪 . All rights reserved.</div>
+    </footer>
+    <!-- jsQR fallback library (used if BarcodeDetector is not available) -->
+    <script src="https://unpkg.com/jsqr/dist/jsQR.js"></script>
+
+    <script src="index.js"></script>
+</body>
+
+</html>

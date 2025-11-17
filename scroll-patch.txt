@@ -1,0 +1,6 @@
+Add this after line 374 (after "scanning = true;"):
+
+        // Scroll to camera
+        setTimeout(() => {
+            scanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);

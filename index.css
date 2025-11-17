@@ -1,0 +1,532 @@
+body {
+    min-height: 100vh;
+    background-image: linear-gradient(to bottom, #8d64eb 1%, #864cbf 100% 100%);
+    direction: rtl;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+}
+
+nav {
+    background-color: #00000075;
+    padding: 5px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-sizing: border-box;
+    border-radius: 20px;
+    z-index: 100;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    position: relative;
+    margin-right: 20px;
+}
+
+.logo-img {
+    width: 70px;
+    border-radius: 50%;
+    box-shadow: 0 3px 12px rgb(0 0 0 / 41%);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.win-logo-desktop,
+.win-logo-mobile {
+    width: 120px;
+    height: 65px;
+}
+
+.win-logo-mobile {
+    width: 190px;
+    height: auto;
+    object-fit: contain;
+    border-radius: 50%;
+}
+
+.win-logo {
+    margin-top: auto;
+    /* This line pushes the element to the bottom of the flex container */
+    text-align: center;
+    padding-top: 20px;
+}
+
+.win-logo-mobile-icon {
+    width: 115px;
+}
+
+.logo-img:hover {
+    transform: scale(1.1) rotate(360deg);
+    box-shadow: 0 3px 12px rgb(0 0 0 / 60%);
+}
+
+a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    font-family: "Cairo", sans-serif;
+    text-align: center;
+}
+
+a:hover {
+    color: #f0e8ff;
+}
+
+.link-div,
+.link-div-icon {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    justify-content: center;
+}
+
+.link-div-icon.desktop-only {
+    display: flex;
+    /* visible on desktop */
+    align-items: center;
+}
+
+.link-div-icon.mobile-only {
+    display: none;
+    align-items: center;
+}
+
+.hamburger {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.drawer {
+    position: fixed;
+    right: -250px;
+    top: 0;
+    height: 100vh;
+    width: 250px;
+    background: rgb(33 52 107 / 95%);
+    transition: right 0.3s ease;
+    padding-top: 30px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+.drawer.open {
+    right: 0;
+}
+
+.mobile-nav {
+    display: none;
+}
+
+.intro {
+    text-align: center;
+    color: white;
+    margin-top: 110px;
+    background-color: #22222257;
+}
+
+.intro h1 {
+    font-size: 36px;
+    text-align: center;
+    font-family: "noto kufi arabic", sans-serif;
+    margin-bottom: 10px;
+    color: #f7b900;
+    margin-top: 0px;
+}
+
+.intro h2 {
+    font-size: 30px;
+    text-align: center;
+    font-family: "Cairo", sans-serif;
+    margin-top: 0;
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: #343545;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #c9c4c4;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #d3d3d3;
+}
+
+.hidden {
+    display: none !important;
+}
+
+#login-section {
+    align-self: center;
+    background: rgb(255, 255, 255);
+    padding: 0 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 11px 3px rgb(69 69 69 / 81%);
+    max-width: 92%;
+    text-align: center;
+    box-sizing: border-box;
+    margin: 15px 0 30px;
+}
+
+#login-section h2 {
+    font-family: "noto kufi arabic", sans-serif;
+    margin: 20px 0px;
+    font-size: 20px;
+}
+
+#login-section input[type="text"] {
+    font-family: "noto kufi arabic", sans-serif;
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    transition: border 0.2s linear, box-shadow 0.2s linear;
+}
+
+
+#login-section button {
+    width: 80%;
+    margin-bottom: 20px;
+    border: 0px;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: bottom;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 4px, rgba(0, 0, 0, 0.25) 0px -4px inset;
+    background: rgb(51, 51, 51);
+    color: rgb(255, 255, 255);
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    min-height: 48px;
+    padding: 0px 16px 4px;
+    position: relative;
+    font-family: "Cairo", sans-serif;
+}
+
+#login-section button:hover {
+    min-height: 46px;
+    margin-top: 2px;
+    padding-bottom: 2px;
+}
+
+#login-section button:active {
+    min-height: 44px;
+    margin-top: 4px;
+    padding-bottom: 0px;
+    box-shadow: none;
+    background-color: rgb(43, 43, 43);
+}
+
+#login-section button[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(0, 0, 0, 0.12);
+    border-top-color: #6b93ff;
+    border-radius: 50%;
+    animation: spin 542013s linear infinite;
+    vertical-align: middle;
+    margin-left: 8px;
+}
+
+.rules .rules-content {
+    margin: 25px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.rules h2 {
+    font-size: 30px;
+    text-align: center;
+    font-family: "Cairo", sans-serif;
+    margin-top: 50px;
+    color: #f7b900;
+    text-shadow: 2px 2px 4px #000000a1;
+}
+
+.rules li {
+    font-size: 22px;
+    text-align: right;
+    font-family: "Cairo", sans-serif;
+    margin: 10px 0;
+    color: white;
+    list-style-type: square;
+}
+
+.encourage {
+    margin: 20px auto;
+    text-align: center;
+}
+
+.encourage .c1,
+.c2 {
+    font-size: 28px;
+    color: black;
+    text-shadow: 1px 1px 2px #ffffffa1;
+    font-family: "Cairo", sans-serif;
+    margin: 0;
+}
+
+.c2 {
+    margin: 15px 0 ;
+    color: white;
+    text-shadow: 1px 1px 2px #000000a1;
+    font-size: 24px;
+}
+
+#en-button {
+    width: 80%;
+    margin-bottom: 20px;
+    border: 0px;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: bottom;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 4px, rgba(0, 0, 0, 0.25) 0px -4px inset;
+    background: #f7b900;
+    color: #000;
+    text-shadow: 0 0 9px #fff;
+    border-radius: 4px;
+    font-size: 23px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    height: 60px;
+    padding: 0px 16px 4px;
+    position: relative;
+    font-family: "Cairo", sans-serif;
+}
+
+#en-button:hover {
+    min-height: 46px;
+    margin-top: 2px;
+    padding-bottom: 2px;
+}
+
+#en-button:active {
+    min-height: 44px;
+    margin-top: 4px;
+    padding-bottom: 0px;
+    box-shadow: none;
+    background-color: rgb(206, 171, 58);
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.scanner {
+    margin-top: 12px;
+}
+
+#video {
+    width: 100%;
+    max-height: 360px;
+    background: #000;
+    border-radius: 8px;
+}
+
+.scan-result {
+    margin-top: 8px;
+    color: #222;
+    font-weight: 600;
+    word-break: break-word;
+}
+
+#stop-scan {
+    margin-top: 8px;
+    background: #ff6b6b;
+}
+
+footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    margin-top: auto;
+    padding: 10px 0;
+    font-family: "Cairo", sans-serif;
+    direction: ltr;
+    background-color: #222;
+}
+
+footer img {
+    width: 80px;
+    border-radius: 50%;
+}
+
+@media (max-width: 600px) {
+    .desktop-nav {
+        display: none;
+    }
+
+    .link-div-icon {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1em;
+        justify-content: center;
+    }
+
+
+    .link-div-icon.desktop-only {
+        display: none;
+    }
+
+    .link-div-icon.mobile-only {
+        display: flex;
+        margin-inline-start: 10px;
+    }
+
+    .mobile-nav {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        box-sizing: border-box;
+        /* Ensures padding is calculated inside the 100% height */
+        padding: 20px;
+        /* Add general padding back for spacing */
+    }
+
+    nav {
+        width: calc(100% - 40px);
+    }
+
+    .hamburger {
+        display: block;
+    }
+
+    .nav-links,
+    .win-logo-mobile {
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+        margin: 0px;
+    }
+}
+
+/* Message Box Styles */
+.message-box {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.message-box.hidden {
+    display: none;
+    opacity: 0;
+}
+
+.message-content {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    max-width: 400px;
+    animation: slideUp 0.4s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.message-icon {
+    font-size: 60px;
+    margin-bottom: 20px;
+    height: 60px;
+}
+
+.message-text {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 30px;
+    font-family: 'Cairo', 'Noto Kufi Arabic', sans-serif;
+    line-height: 1.6;
+}
+
+.message-close {
+    background-color: #8d64eb;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: 'Cairo', 'Noto Kufi Arabic', sans-serif;
+    transition: background-color 0.3s ease;
+}
+
+.message-close:hover {
+    background-color: #6d45cb;
+}
+
+.message-close:active {
+    transform: scale(0.98);
+}
+
+/* Success state */
+.message-content.success {
+    border-left: 5px solid #4CAF50;
+}
+
+.message-content.success .message-icon {
+    color: #4CAF50;
+}
+
+/* Error state */
+.message-content.error {
+    border-left: 5px solid #f44336;
+}
+
+.message-content.error .message-icon {
+    color: #f44336;
+}
