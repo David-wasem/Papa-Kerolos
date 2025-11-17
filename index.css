@@ -257,11 +257,15 @@ a:hover {
 }
 
 .rules .rules-content {
-    margin: 25px;
-    padding: 20px;
+    padding: 10px 40px;
     display: flex;
     flex-direction: column;
     gap: 20px;
+    width: fit-content;
+    margin: 25px auto;
+    border-radius: 10px;
+    background: linear-gradient(to right, #8d64eb, #864cbf75);
+    box-shadow: 0 0 15px rgba(183, 28, 28, 0.1);
 }
 
 .rules h2 {
@@ -274,12 +278,20 @@ a:hover {
 }
 
 .rules li {
-    font-size: 22px;
+    font-size: 20px;
     text-align: right;
     font-family: "Cairo", sans-serif;
-    margin: 10px 0;
+    padding: 10px 7px;
     color: white;
     list-style-type: square;
+    font-weight: 500;
+    border-radius: 8px;
+    background: linear-gradient(to right, #8d64eb, #864cbf75);
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    box-shadow: 0 3px 12px rgba(183, 28, 28, 0.05);
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .encourage {
@@ -297,7 +309,7 @@ a:hover {
 }
 
 .c2 {
-    margin: 15px 0 ;
+    margin: 15px 0;
     color: white;
     text-shadow: 1px 1px 2px #000000a1;
     font-size: 24px;
@@ -326,17 +338,14 @@ a:hover {
 }
 
 #en-button:hover {
-    min-height: 46px;
-    margin-top: 2px;
     padding-bottom: 2px;
 }
 
 #en-button:active {
     min-height: 44px;
-    margin-top: 4px;
     padding-bottom: 0px;
     box-shadow: none;
-    background-color: rgb(206, 171, 58);
+    background-color: rgb(255, 209, 57);
 }
 
 @keyframes spin {
@@ -433,6 +442,15 @@ footer img {
         gap: 20px;
         padding: 20px;
         margin: 0px;
+    }
+
+    .rules .rules-content {
+        margin: 25px 12px;
+        padding: 10px 25px;
+    }
+
+    .rules h2 {
+        font-size: 26px;
     }
 }
 
