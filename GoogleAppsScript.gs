@@ -5,88 +5,52 @@
 const SHEET_ID = '14pO4fR8zG8RA_qx39MAdovPJX6fpidVNQPfUm5cD2jw'; // Your Google Sheet ID
 const SHEET_NAME = 'Sheet1'; // The name of your worksheet/tab
 const RULES_SHEET_NAME = 'rules'; // sheet/tab that contains rules (one rule per row, first column)
+const DATA_SHEET_NAME = 'data'; // The sheet containing user IDs and names
 
-/**
- * Handles HTTP POST requests from the web app
- * Receives: { timestamp, userId, scanned }
- * Writes to Google Sheet in columns: [Timestamp, ID, QR Value]
- */
-function doPost(e) {
-    try {
-        // 1. Extract the JSON payload from the POST request
-        const raw = e.postData && e.postData.contents ? e.postData.contents : null;
-        
-        if (!raw) {
-            return ContentService.createTextOutput(
-                JSON.stringify({ success: false, error: 'No data received' })
-            ).setMimeType(ContentService.MimeType.JSON);
-        }
 
-        // 2. Parse the JSON payload
-        const payload = JSON.parse(raw);
-
-        // 3. Extract data fields
-        // Prefer ISO timestamp from client; fall back to server time
-        const timestampIso = payload.isoTs || (new Date()).toISOString();
-        const userId = (payload.userId || 'Unknown').toString();
-        const qrValue = (payload.scanned || '').toString();
-
-        // 4. Open the spreadsheet and get the target sheet
-        const ss = SpreadsheetApp.openById(SHEET_ID);
-        const sheet = ss.getSheetByName(SHEET_NAME) || ss.getSheets()[0];
-
-        // 4a. Check for duplicate: same userId and qrValue within last 12 hours
-        const data = sheet.getDataRange().getValues(); // includes header if present
-        const now = new Date(timestampIso);
-        const twelveHours = 12 * 60 * 60 * 1000;
-
-        for (let i = data.length - 1; i >= 0; i--) {
-            const row = data[i];
-            const tsCell = row[0];
-            const idCell = row[1] ? row[1].toString() : '';
-            const qrCell = row[2] ? row[2].toString() : '';
-
-            if (idCell === userId && qrCell === qrValue) {
-                let prevTs = null;
-                if (tsCell instanceof Date) prevTs = tsCell;
-                else prevTs = new Date(tsCell);
-
-                if (!isNaN(prevTs.getTime())) {
-                    const diff = now.getTime() - prevTs.getTime();
-                    if (diff < twelveHours) {
-                        // Duplicate within 12 hours -> reject
-                        return ContentService.createTextOutput(
-                            JSON.stringify({ success: false, error: 'duplicate_12h' })
-                        ).setMimeType(ContentService.MimeType.JSON);
-                    }
-                }
-                // if older than 12h, we can break and allow append
-                break;
-            }
-        }
-
-        // 5. Append the row with: [ISO Timestamp, ID, QR Value]
-        sheet.appendRow([timestampIso, userId, qrValue]);
-
-        // 6. Return success response
-        return ContentService.createTextOutput(
-            JSON.stringify({ success: true, message: 'Data saved successfully' })
-        ).setMimeType(ContentService.MimeType.JSON);
-
-    } catch (error) {
-        // Return error response
-        return ContentService.createTextOutput(
-            JSON.stringify({ success: false, error: error.toString() })
-        ).setMimeType(ContentService.MimeType.JSON);
-    }
-}
-
-/**
- * Simple GET handler (optional - for testing)
- */
 function doGet(e) {
     try {
         var params = e.parameter || {};
+
+        if (params.action === 'checkId' && params.userId) {
+            var ss = SpreadsheetApp.openById(SHEET_ID);
+            var sheet = ss.getSheetByName(DATA_SHEET_NAME);
+            if (!sheet) {
+                return ContentService.createTextOutput(JSON.stringify({ success: false, error: "'data' sheet not found" })).setMimeType(ContentService.MimeType.JSON);
+            }
+            // Assuming IDs are in the first column (A)
+            var columnValues = sheet.getRange('A1:A' + sheet.getLastRow()).getValues();
+            var idList = columnValues.map(function(row) { return row[0].toString().trim(); });
+            
+            var userId = params.userId.toString().trim();
+            var exists = idList.indexOf(userId) !== -1;
+
+            return ContentService.createTextOutput(
+                JSON.stringify({ success: true, exists: exists })
+            ).setMimeType(ContentService.MimeType.JSON);
+        }
+
+        if (params.action === 'getUserData' && params.userId) {
+            var ss = SpreadsheetApp.openById(SHEET_ID);
+            var sheet = ss.getSheetByName(DATA_SHEET_NAME);
+            if (!sheet) {
+                return ContentService.createTextOutput(JSON.stringify({ success: false, error: 'Data sheet not found' })).setMimeType(ContentService.MimeType.JSON);
+            }
+            var data = sheet.getDataRange().getValues();
+            var userId = params.userId.toString().trim();
+            var userData = { success: true, found: false };
+
+            for (var i = 0; i < data.length; i++) {
+                // Assuming ID is in column 1 (A) and Name is in column 2 (B)
+                if (data[i][0].toString().trim() === userId) {
+                    userData.found = true;
+                    userData.name = data[i][1].toString();
+                    break;
+                }
+            }
+            return ContentService.createTextOutput(JSON.stringify(userData)).setMimeType(ContentService.MimeType.JSON);
+        }
+        
         // If caller asks for last timestamp check: ?action=last&userId=12&qrValue=10
         if (params.action === 'last' && params.userId && params.qrValue) {
             var ss = SpreadsheetApp.openById(SHEET_ID);

@@ -512,15 +512,41 @@ footer img {
 }
 
 .message-close {
-    background-color: #8d64eb;
-    color: white;
+    margin-top: 15px;
+    padding: 8px 16px;
     border: none;
-    padding: 12px 30px;
-    border-radius: 10px;
-    font-size: 16px;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
     cursor: pointer;
-    font-family: 'Cairo', 'Noto Kufi Arabic', sans-serif;
-    transition: background-color 0.3s ease;
+}
+
+.confirmation-buttons {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.confirm-btn, .cancel-btn {
+    padding: 10px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    /* width: 40%; */
+    font-family: 'Cairo', sans-serif;
+    text-align: center;
+    margin: 5px;
+}
+
+.confirm-btn {
+    background-color: #28a745; /* green */
+}
+
+.cancel-btn {
+    background-color: #dc3545; /* red */
 }
 
 .message-close:hover {

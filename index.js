@@ -34,16 +34,62 @@ document.addEventListener('DOMContentLoaded', () => {
     const messageIcon = document.getElementById('message-icon');
     const messageText = document.getElementById('message-text');
     const messageClose = document.getElementById('message-close');
+    const confirmationDialog = document.getElementById('confirmation-dialog');
+    const confirmationText = document.getElementById('confirmation-text');
+    const confirmScanBtn = document.getElementById('confirm-scan-btn');
+    const cancelScanBtn = document.getElementById('cancel-scan-btn');
+    const idValidationMessage = document.getElementById('id-validation-message');
 
     let stream = null;
     let scanning = false;
     let scanLoopId = null;
     let isLocked = false; // tracks whether an ID is confirmed (locked)
+    let pendingScan = null; // To hold scan data while confirming
 
     // --- CONFIGURATION ---
     // Replace with your Google Apps Script Web App URL
-    const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbx678RKKugjzaj_jcPT9wU-2fX0WEJqyypOWcEyEabgtjik9KiRjzu7QWMOzIKjcvcb/exec'; // You'll need to deploy a Google Apps Script and add the URL here
+    const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbyF0FD--kVG5HlVbKFcE-AuiLSJuLgosZU3Uf0YLx1ANCYuAB6Dn_Sr3Xhjs2HAiIni/exec'; // You'll need to deploy a Google Apps Script and add the URL here
 
+    userIdInput && userIdInput.addEventListener('blur', () => {
+        const id = userIdInput.value.trim();
+        enterBtn.disabled = true;
+        if (!id) {
+            idValidationMessage.textContent = '';
+            return;
+        }
+
+        idValidationMessage.textContent = 'تحميل بيانات ...';
+        idValidationMessage.style.fontFamily = 'Noto Kufi Arabic', 'sans-serif';
+        idValidationMessage.className = 'validation-message checking';
+
+        fetch(WEBAPP_URL + '?action=checkId&userId=' + encodeURIComponent(id), { method: 'GET', mode: 'cors' })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    if (data.exists) {
+                        idValidationMessage.textContent = 'الكود صحيح';
+                        idValidationMessage.style.color = '#28a745';
+                        idValidationMessage.className = 'validation-message success';
+                        enterBtn.disabled = false;
+                    } else {
+                        idValidationMessage.textContent = 'الكود غير صحيح';
+                        idValidationMessage.style.color = '#dc3545';
+                        idValidationMessage.className = 'validation-message error';
+                        enterBtn.disabled = true;
+                    }
+                } else {
+                    idValidationMessage.textContent = 'Error checking ID.';
+                    idValidationMessage.className = 'validation-message error';
+                    enterBtn.disabled = true;
+                }
+            })
+            .catch(error => {
+                console.error('Error checking ID:', error);
+                idValidationMessage.textContent = 'Network error. Please try again.';
+                idValidationMessage.className = 'validation-message error';
+            });
+    });
+    
     /**
      * Sends scanned QR data to Google Sheets via Google Apps Script
      * @param {string} qrValue The scanned QR code value
@@ -238,6 +284,28 @@ document.addEventListener('DOMContentLoaded', () => {
         // Show scanning result
         scanResult.textContent = 'Scanned: ' + text + ' | Time: ' + timestamp;
 
+        // Get user data to show in confirmation
+        show(loadingEl);
+        fetch(WEBAPP_URL + '?action=getUserData&userId=' + encodeURIComponent(userId), { method: 'GET', mode: 'cors' })
+            .then(res => res.json())
+            .then(userData => {
+                hide(loadingEl);
+                if (userData.success && userData.found) {
+                    // Store scan data and show custom confirmation dialog
+                    pendingScan = { text, userId, timestamp };
+                    confirmationText.innerHTML = `الكود : ${userId}<br>الاسم : ${userData.name}<br><br>هتسجل الكود ؟`;
+                    show(confirmationDialog);
+                } else {
+                    showMessageBox('error', 'User not found.');
+                }
+            })
+            .catch(err => {
+                hide(loadingEl);
+                showMessageBox('error', 'Error fetching user data.');
+            });
+    }
+
+    function proceedWithScan(text, userId, timestamp) {
         // First, check server for the last timestamp
         show(loadingEl);
         fetch(WEBAPP_URL + '?action=last&userId=' + encodeURIComponent(userId) + '&qrValue=' + encodeURIComponent(text), { method: 'GET', mode: 'cors' })
@@ -402,6 +470,20 @@ document.addEventListener('DOMContentLoaded', () => {
         stopCamera();
         if (scanLoopId) cancelAnimationFrame(scanLoopId);
         scanResult.textContent = 'Scanning stopped.';
+    });
+
+    confirmScanBtn && confirmScanBtn.addEventListener('click', () => {
+        if (pendingScan) {
+            hide(confirmationDialog);
+            proceedWithScan(pendingScan.text, pendingScan.userId, pendingScan.timestamp);
+            pendingScan = null;
+        }
+    });
+
+    cancelScanBtn && cancelScanBtn.addEventListener('click', () => {
+        hide(confirmationDialog);
+        pendingScan = null;
+        scanResult.textContent = 'Scan canceled.';
     });
 
     const rulesContent = document.querySelector('.rules-content');
