@@ -515,14 +515,13 @@ a:hover {
 }
 
 .rank-table {
-    width: 100%;
+    width: auto;
     border-collapse: collapse;
     margin: 0 auto;
     background: rgba(255, 255, 255, 0.03);
     border-radius: 20px;
     table-layout: auto;
-    display: block;
-    overflow-x: auto;
+    table-layout: fixed;
 }
 
 .rank-table caption {
@@ -659,7 +658,7 @@ footer img {
 
     .rank-table th,
     .rank-table td {
-        padding: 20px 30px;
+        padding: 20px;
         font-size: 1.1em;
     }
 
