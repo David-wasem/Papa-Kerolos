@@ -490,6 +490,66 @@ a:hover {
     color: #f44336;
 }
 
+/*----------------------------------------*/
+/*-------------- RANK PAGE ---------------*/
+/*----------------------------------------*/
+
+.header {
+    margin-top: 150px;
+    font-family: "Noto Kufi Arabic", sans-serif;
+    font-size: 1.8em;
+    color: #ffffff;
+    text-align: center;
+    text-shadow: 0px 2px 9px #000000;
+    font-weight: 600;
+    background-color: #343545;
+    padding: 15px;
+}
+
+.rank-container {
+    width: 75%;
+    box-sizing: border-box;
+    text-align: center;
+    margin: 50px auto;
+    border-radius: 20px;
+}
+
+.rank-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 20px;
+    table-layout: auto;
+    display: block;
+    overflow-x: auto;
+}
+
+.rank-table caption {
+    caption-side: top;
+    color: #FFBF00;
+    text-shadow: 0px 2px 9px #000000;
+    font-family: "Noto Kufi Arabic", sans-serif;
+    font-size: 1.8em;
+    margin-bottom: 12px;
+    font-weight: 800;
+}
+
+.rank-table th,
+.rank-table td {
+    padding: 25px 40px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    color: white;
+    font-family: Cairo, sans-serif;
+    text-align: center;
+    letter-spacing: 0.5px;
+}
+
+.rank-table th {
+    background: rgba(255, 255, 255, 0.02);
+    font-weight: 700;
+}
+
 /**************************************/
 /*********** Footer Styles ************/
 /**************************************/
@@ -573,19 +633,42 @@ footer img {
     .rules h2 {
         font-size: 26px;
     }
+
+    /*----------------------------------------*/
+    /*-------------- ELRANK PAGE -------------*/
+    /*----------------------------------------*/
+
+    .header {
+        font-size: 1.5em;
+        margin-top: 120px;
+    }
+
+    .rank-container {
+        width: 100%;
+        min-width: 100%;
+        padding: 10px;
+        margin: 10px auto 20px;
+    }
+
+    .rank-table {
+        width: 100%;
+        font-size: 0.9em;
+        display: block;
+        overflow-x: auto;
+    }
+
+    .rank-table th,
+    .rank-table td {
+        padding: 20px 30px;
+        font-size: 1.1em;
+    }
+
+    .rank-table caption {
+        font-size: 1.5em;
+        margin-bottom: 10px;
+    }
 }
 
-.header {
-    margin-top: 150px;
-    font-family: "Noto Kufi Arabic", sans-serif;
-    font-size: 1.8em;
-    color: #ffffff;
-    text-align: center;
-    text-shadow: 0px 2px 9px #000000;
-    font-weight: 600;
-    background-color: #343545;
-    padding: 15px;
-}
 
 /**************************************/
 /********* Scrollbar Styles ***********/

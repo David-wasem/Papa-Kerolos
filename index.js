@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 idValidationMessage.className = 'validation-message error';
             });
     });
-    
+
     /**
      * Sends scanned QR data to Google Sheets via Google Apps Script
      * @param {string} qrValue The scanned QR code value
@@ -513,5 +513,89 @@ document.addEventListener('DOMContentLoaded', () => {
     if (rulesContent) {
         fetchRules(); // Initial fetch
         setInterval(fetchRules, 5000); // Refresh every 5 seconds
+    }
+    
+    const rankTable = document.querySelector('.rank-table');
+    const sheetId = '14pO4fR8zG8RA_qx39MAdovPJX6fpidVNQPfUm5cD2jw';
+
+    if (rankTable) {
+        const thead = rankTable.querySelector('thead');
+        const tbody = rankTable.querySelector('tbody');
+
+        function clearRankTable() {
+            if (thead) thead.innerHTML = '';
+            if (tbody) tbody.innerHTML = '';
+        }
+
+        function parseCsv(csvText) {
+            const rows = csvText.split('\n').map(r => r.replace(/"/g, ''));
+            return rows.map(r => r.split(','));
+        }
+
+        function renderRankTable(rows) {
+            clearRankTable();
+            if (!rows || rows.length < 1) {
+                if (tbody) tbody.innerHTML = '<tr><td>No data</td></tr>';
+                return;
+            }
+
+            const headerRow = rows[0];
+            const nameColumnIndex = headerRow.indexOf('الاسم');
+
+            // Find indices of columns to keep (non-empty headers)
+            const visibleColumnIndices = [];
+            headerRow.forEach((header, index) => {
+                if (header.trim() !== '') {
+                    visibleColumnIndices.push(index);
+                }
+            });
+
+            // If no visible columns, show no data
+            if (visibleColumnIndices.length === 0) {
+                if (tbody) tbody.innerHTML = '<tr><td>No data</td></tr>';
+                return;
+            }
+
+            // Header
+            const trHead = document.createElement('tr');
+            visibleColumnIndices.forEach(index => {
+                const th = document.createElement('th');
+                th.textContent = headerRow[index];
+                trHead.appendChild(th);
+            });
+            if (thead) thead.appendChild(trHead);
+
+            // Body rows
+            for (const r of rows.slice(1)) {
+                if (r.join('').trim() === '') continue;
+                if (nameColumnIndex !== -1 && (!r[nameColumnIndex] || r[nameColumnIndex].trim() === '')) {
+                    break;
+                }
+                const tr = document.createElement('tr');
+                visibleColumnIndices.forEach(index => {
+                    const td = document.createElement('td');
+                    td.textContent = r[index] || ''; // handle cases where row is shorter
+                    tr.appendChild(td);
+                });
+                if (tbody) tbody.appendChild(tr);
+            }
+        }
+        function fetchRank()
+        {
+            const rankSheetName = 'rank';
+            fetch(`https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${rankSheetName}`)
+                .then(r => r.text())
+                .then(csvText => {
+                    const rows = parseCsv(csvText);
+                    renderRankTable(rows);
+                })
+                .catch(err => {
+                    console.error('Error fetching rank sheet:', err);
+                    clearRankTable();
+                    if (tbody) tbody.innerHTML = '<tr><td>Failed to load data. Check console for details.</td></tr>';
+                });
+        }
+        fetchRank(); // Initial fetch
+        setInterval(fetchRank, 5000); // Refresh every 5 seconds
     }
 });
