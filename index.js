@@ -505,7 +505,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 })
                 .catch(error => {
                     console.error('Error fetching Google Sheet data:', error);
-                    rulesContent.textContent = 'Failed to load rules. Please try again later.';
+                    rulesContent.textContent = 'القواعد بتتحدث😎';
                 });
         }
     }
