@@ -592,7 +592,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 .catch(err => {
                     console.error('Error fetching rank sheet:', err);
                     clearRankTable();
-                    if (tbody) tbody.innerHTML = '<tr><td>Failed to load data. Check console for details.</td></tr>';
+                    if (tbody) tbody.innerHTML = '<tr><td>الدرجات بتتحدث استني 😎</td></tr>';
                 });
         }
         fetchRank(); // Initial fetch
